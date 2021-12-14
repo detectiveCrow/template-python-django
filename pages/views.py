@@ -20,7 +20,21 @@ def home_view(request, *args, **kwargs):
         'message': message,
         'secret_message': secret_message,
         'color_class': color_class,
-        'fruit_list': fruit_list
+        'fruit_list': fruit_list,
+        'db_connection': check_db_connection()
     }
 
     return HttpResponse(template.render(context, request))
+
+def check_db_connection():
+    from django.db import connections
+    from django.db.utils import OperationalError
+    db_conn = connections['default']
+    try:
+        c = db_conn.cursor()
+    except OperationalError:
+        connected = False
+    else:
+        connected = True
+    
+    return connected

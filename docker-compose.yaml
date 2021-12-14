@@ -1,14 +1,44 @@
 version: "3"
 
+networks:
+  django:
+
 services:
-  web:
-    build: .
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: app
+    entrypoint: ["bash", "-c"]
+    command:
+      - |
+        python3 manage.py migrate
+        python3 manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    environment:
+      - TEST_SECRET_MESSAGE=secret
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=root
+      - DB_PASSWORD=password
+    networks:
+      - django
   db:
     image: postgres
+    container_name: db
+    ports:
+      - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+    networks:
+      - django
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 3
