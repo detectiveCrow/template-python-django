@@ -15,17 +15,34 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Get Environment Variables
+import os
+import dotenv
+ENV_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+
+dotenv.read_dotenv(ENV_PATH)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-uxx@yfonqgc8-czj4v+5-0xe&(b1rzt=i3lr1u))v=*m9!@pq4'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-uxx@yfonqgc8-czj4v+5-0xe&(b1rzt=i3lr1u))v=*m9!@pq4')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+# Custom Settings
+DEBUG = str(os.environ.get('DEBUG')) == "1" # 1 == TRUE
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.environ.get('DB_ENGINE'),
+#         'NAME': os.environ.get('DB_NAME'),
+#         'HOST': os.environ.get('DB_HOST'),
+#         'PORT': os.environ.get('DB_PORT'),
+#     }
+# }
 
 
 # Application definition
@@ -37,6 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Own
+    'pages',
 ]
 
 MIDDLEWARE = [
@@ -68,17 +88,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'base_django.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
