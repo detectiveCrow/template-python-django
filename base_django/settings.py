@@ -43,6 +43,9 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'OPTIONS': {
+            'connect_timeout': 3,
+        }
     }
 }
 
@@ -58,7 +61,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Own
-    'pages',
+    'notebook'
 ]
 
 MIDDLEWARE = [
@@ -76,7 +79,7 @@ ROOT_URLCONF = 'base_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

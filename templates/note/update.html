@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% block content %}
+
+    <div class="card">
+        <div class="card-body">
+
+            <form action="/note/{{ note.id }}/update" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="note_title_help">제목</label>
+                    <input type="text" class="form-control" id="note_title" name ="note_title" aria-describedby="note_title_help" value={{ note.note_title }}>
+                    <small id="note_title_help" class="form-text text-muted">제목을 입력 해 주세요!</small>
+                    
+                    <label for="note_data_help">내용</label>
+                    <input type="text" class="form-control" id="note_data" name ="note_data" aria-describedby="note_data_help" value={{ note.note_data }}>
+                    <small id="note_data_help" class="form-text text-muted">내용을 입력 해 주세요!</small>
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary">수정</button>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

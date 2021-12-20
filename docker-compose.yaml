@@ -2,6 +2,7 @@ version: "3"
 
 networks:
   django:
+    driver: bridge
 
 services:
   app:
@@ -12,6 +13,7 @@ services:
     entrypoint: ["bash", "-c"]
     command:
       - |
+        python3 manage.py makemigrations
         python3 manage.py migrate
         python3 manage.py runserver 0.0.0.0:8000
     ports:
@@ -19,6 +21,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    links:
+      - "db:db"
     environment:
       - TEST_SECRET_MESSAGE=secret
       - DB_HOST=db
@@ -30,6 +34,10 @@ services:
   db:
     image: postgres
     container_name: db
+    # entrypoint:
+    # command: 
+    #   - |
+    #     psql createuser postgres -s
     ports:
       - "5432:5432"
     environment:

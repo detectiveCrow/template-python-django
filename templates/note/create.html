@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-body">
+
+        <form action="/note/create/" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="note_title_help">제목</label>
+                <input type="text" class="form-control" id="note_title" name ="note_title" aria-describedby="note_title_help">
+                
+                <label for="note_data_help">내용</label>
+                <input type="text" class="form-control" id="note_data" name ="note_data" aria-describedby="note_data_help">
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary">작성하기</button>
+        </form>
+
+    </div>
+</div>
